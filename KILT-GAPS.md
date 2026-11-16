@@ -8,8 +8,8 @@ of its own, so these wait for the kit.
   query loop's list sits about 20 pixels in.
 - **Breadcrumbs for a CMS without them built in.** The template has the
   look; the theme would need a block that writes the trail.
-- **A byline.** Date and author on one line under a post's title, in the
-  kit's muted gray.
+- ~~**A byline.**~~ Web Kilt 0.7.0 adds the Article component (category,
+  date, headline, summary and byline); the theme uses it.
 - **Buttons in the block editor.** The editor shows WordPress's own button
   styles; a small editor stylesheet from the kit (for `.wp-block-button`
   with the btn, ghost and cta styles) would make the editor match the page.
