@@ -98,9 +98,11 @@ add_action(
 		}
 		$url   = $home ? home_url( '/' ) : ( $post instanceof WP_Post ? get_permalink( $post ) : home_url( add_query_arg( array() ) ) );
 		$title = $home || ! ( $post instanceof WP_Post ) ? $site : get_the_title( $post );
+		// A post is an article: its date and author, which some apps show
+		$is_post = ! $home && $post instanceof WP_Post && 'post' === $post->post_type;
 		$tags  = array(
 			array( 'name', 'description', $text ),
-			array( 'property', 'og:type', $home ? 'website' : 'article' ),
+			array( 'property', 'og:type', $is_post ? 'article' : 'website' ),
 			array( 'property', 'og:site_name', $site ),
 			array( 'property', 'og:title', $title ),
 			array( 'property', 'og:description', $text ),
@@ -111,6 +113,10 @@ add_action(
 			array( 'property', 'og:image:alt', 'Forbes & Moreword\'s home page: WordPress Sites in CMU Style, next to two street signs reading Forbes Ave and Moreword Ave.' ),
 			array( 'name', 'twitter:card', 'summary_large_image' ),
 		);
+		if ( $is_post ) {
+			$tags[] = array( 'property', 'article:published_time', get_the_date( 'c', $post ) );
+			$tags[] = array( 'name', 'author', get_the_author_meta( 'display_name', $post->post_author ) );
+		}
 		echo "<!-- Link previews -->\n";
 		foreach ( $tags as $t ) {
 			printf( "<meta %s=\"%s\" content=\"%s\" />\n", $t[0], esc_attr( $t[1] ), esc_attr( $t[2] ) );
