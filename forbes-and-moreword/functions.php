@@ -152,3 +152,16 @@ add_filter(
 	10,
 	2
 );
+
+// Block templates render in our canvas.php, which drops WordPress's
+// div.wp-site-blocks so #container is a child of <body> and the template's
+// menu works (see canvas.php)
+add_filter(
+	'template_include',
+	function ( $template ) {
+		return wp_normalize_path( $template ) === wp_normalize_path( ABSPATH . WPINC . '/template-canvas.php' )
+			? __DIR__ . '/canvas.php'
+			: $template;
+	},
+	20
+);
