@@ -165,3 +165,56 @@ add_filter(
 	},
 	20
 );
+
+// A post's top is the kit's Article (cmu-article): the first category as a
+// label, the date over the headline, the excerpt (only one written by hand)
+// as the summary, then "By" and the author. The blocks in the template show
+// in the editor; on the site, PHP writes the kit's markup from the post.
+// The cmu-article and cmu-byline styles arrive in Web Kilt 0.7.0; with 0.6.9
+// the parts show in the template's plain styles.
+function fam_ap_date( $time ) {
+	// AP: abbreviate Jan., Feb., Aug., Sept., Oct., Nov. and Dec. with a date
+	$month = array( 1 => 'Jan.', 'Feb.', 'March', 'April', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.' );
+	return $month[ (int) wp_date( 'n', $time ) ] . ' ' . wp_date( 'j, Y', $time );
+}
+add_filter(
+	'render_block_core/group',
+	function ( $html, $block ) {
+		if ( ! str_contains( $block['attrs']['className'] ?? '', 'cmu-article' ) || ! is_singular() ) {
+			return $html;
+		}
+		$post  = get_post();
+		$out   = '<div class="cmu-article">';
+		$terms = array_filter( get_the_category( $post ), fn( $t ) => 'uncategorized' !== $t->slug );
+		if ( $terms ) {
+			$out .= '<p class="cmu-label">' . esc_html( reset( $terms )->name ) . '</p>';
+		}
+		$time = get_post_timestamp( $post );
+		$out .= '<p class="date"><time datetime="' . esc_attr( wp_date( 'Y-m-d', $time ) ) . '">' . esc_html( fam_ap_date( $time ) ) . '</time></p>';
+		$out .= '<h1>' . esc_html( get_the_title( $post ) ) . '</h1>';
+		if ( has_excerpt( $post ) ) {
+			$out .= '<p class="cmu-lead">' . esc_html( get_the_excerpt( $post ) ) . '</p>';
+		}
+		$out .= '<p class="cmu-byline">By ' . esc_html( get_the_author_meta( 'display_name', $post->post_author ) ) . '</p>';
+		return $out . '</div>';
+	},
+	10,
+	2
+);
+
+// The lead photo is the template's captioned photo: figure.image with the
+// image's caption, if it has one
+add_filter(
+	'render_block_core/post-featured-image',
+	function ( $html, $block ) {
+		if ( ! str_contains( $block['attrs']['className'] ?? '', 'fam-lead-photo' ) || ! has_post_thumbnail() ) {
+			return $html;
+		}
+		$id      = get_post_thumbnail_id();
+		$caption = wp_get_attachment_caption( $id );
+		return '<figure class="image">' . wp_get_attachment_image( $id, 'large' )
+			. ( $caption ? '<figcaption>' . esc_html( $caption ) . '</figcaption>' : '' ) . '</figure>';
+	},
+	10,
+	2
+);

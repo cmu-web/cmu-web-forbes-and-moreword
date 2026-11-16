@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Builds the Forbes & Moreword docs site from this folder with WP-CLI, on an
 # empty WordPress database. Everything on the site comes from here: the pages
-# in pages/, the images in images/, and with --demo the made-up posts in
-# demo/. Nothing is edited in WordPress, so the database can be thrown away
+# in pages/, the News posts in posts/, the images in images/, and with --demo
+# the made-up posts in demo/. Nothing is edited in WordPress, so the database can be thrown away
 # and rebuilt at any time.
 #
 #   seed.sh URL [--demo]
@@ -40,11 +40,12 @@ wp theme delete $(wp theme list --status=inactive --field=name) --quiet 2>/dev/n
 wp post delete $(wp post list --post_type=post,page --post_status=any --format=ids) --force --quiet 2>/dev/null || true
 
 # Images: into the media library, then {{image:name}} in a page is its address
-declare -A image
+declare -A image image_id
 for f in "$here"/images/*; do
   [ -f "$f" ] || continue
   id=$(wp media import "$f" --porcelain)
   image[$(basename "$f")]=$(wp post get "$id" --field=guid)
+  image_id[$(basename "$f")]=$id
 done
 
 # A file's header, between <!-- and -->, holds "name: value" lines
@@ -65,8 +66,19 @@ create() { # file, post type
   [ -n "$(field "$file" template)" ] && args+=(--page_template="$(field "$file" template)")
   [ -n "$(field "$file" date)" ] && args+=(--post_date="$(field "$file" date)")
   [ -n "$(field "$file" author)" ] && args+=(--post_author="$(wp user get "$(field "$file" author)" --field=ID)")
-  wp post create "$tmp" "${args[@]}"
+  [ -n "$(field "$file" category)" ] && args+=(--post_category="$(field "$file" category)")
+  [ -n "$(field "$file" excerpt)" ] && args+=(--post_excerpt="$(field "$file" excerpt)")
+  local id
+  id=$(wp post create "$tmp" "${args[@]}")
   rm -f "$tmp"
+  # A lead photo: one of images/, with its caption
+  local photo
+  photo=$(field "$file" image)
+  if [ -n "$photo" ]; then
+    wp post meta update "$id" _thumbnail_id "${image_id[$photo]:?no images/$photo}" --quiet
+    [ -n "$(field "$file" caption)" ] && wp post update "${image_id[$photo]}" --post_excerpt="$(field "$file" caption)" --quiet
+  fi
+  echo "$id"
 }
 
 for f in "$here"/pages/*.html; do
@@ -85,14 +97,21 @@ done
 wp option update show_on_front page --quiet
 wp option update page_on_front "${front:?pages/ needs a page with slug: home}" --quiet
 
+# News: posts about the theme, by a made-up writer whose password is never
+# saved, in the category named in each post's header
+wp user create mm00 mm00@example.edu --display_name="Margaret Morrison" --role=author --user_pass="$(random)" --porcelain >/dev/null
+for f in "$here"/posts/*.html; do
+  c=$(field "$f" category)
+  [ -n "$c" ] && { wp term create category "$c" --porcelain >/dev/null 2>&1 || true; }
+  create "$f" post >/dev/null
+done
+wp option update page_for_posts "$(wp post list --post_type=page --name=news --field=ID)" --quiet
+
 if [ "$demo" = --demo ]; then
   # Made-up people and posts, for trying the theme; never on the docs site
   wp user create ac00 ac00@example.edu --display_name="Andrew Carnegie" --role=author --user_pass="$(random)" --porcelain >/dev/null
-  wp user create mm00 mm00@example.edu --display_name="Margaret Morrison" --role=author --user_pass="$(random)" --porcelain >/dev/null
   wp user create am00 am00@example.edu --display_name="Andrew Mellon" --role=author --user_pass="$(random)" --porcelain >/dev/null
-  for f in "$here"/demo/pages/*.html; do create "$f" page >/dev/null; done
   for f in "$here"/demo/posts/*.html; do create "$f" post >/dev/null; done
-  wp option update page_for_posts "$(wp post list --post_type=page --name=news --field=ID)" --quiet
 fi
 wp rewrite flush --quiet
 echo "seed.sh: built $(wp post list --post_type=page --format=count) pages and $(wp post list --post_type=post --format=count) posts"
