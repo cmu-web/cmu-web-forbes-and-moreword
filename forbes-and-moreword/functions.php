@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || exit;
 const FAM_KIT       = '0.6.9';
 const FAM_KIT_FILES = array(
 	'css/cmu-cms.css' => 'sha384-9jhXiuuhmbvQJYP71Rg8e7/NBlfXA/7MjHSMxZeSbELc/fdpt3PAwyoS4jvEMXqy',
+	'css/cmu-app.css' => 'sha384-Tj5sbg6foKwNHx77Xj9uSKHv4N7jiYnj97prQWE3B2+6v3K8tsqz/xmsjxeJKvjA',
 	'js/cmu-app.js'   => 'sha384-10393F76wEQPHaJEEoM9M1QEQsl9mTezDdEM45kArp0j26SWs3gxiGsXKrmwJHio',
 );
 const FAM_TEMPLATE  = 'https://www.cmu.edu/common/standard-v6';
@@ -32,6 +33,9 @@ add_action(
 		wp_enqueue_style( 'fam-template', FAM_TEMPLATE . '/css/main.6.7.min.css', array(), null, 'screen' );
 		wp_enqueue_style( 'fam-template-print', FAM_TEMPLATE . '/css/print.min.css', array(), null, 'print' );
 		wp_enqueue_style( 'fam-kit', fam_kit_url( 'css/cmu-cms.css' ), array( 'fam-template' ), null );
+		// The kit's App components (folded text, the AI prompt): registered, not
+		// loaded; a site that uses them adds wp_enqueue_style( 'fam-kit-app' )
+		wp_register_style( 'fam-kit-app', fam_kit_url( 'css/cmu-app.css' ), array( 'fam-kit' ), null );
 		wp_enqueue_script( 'fam-template-list', FAM_TEMPLATE . '/js/list.min.js', array(), null, true );
 		wp_enqueue_script( 'fam-template-jquery', FAM_TEMPLATE . '/js/jquery-1.10.1.min.js', array(), null, true );
 		wp_enqueue_script( 'fam-template', FAM_TEMPLATE . '/js/main.6.7.min.js', array( 'fam-template-list', 'fam-template-jquery' ), null, true );
@@ -41,7 +45,10 @@ add_action(
 
 // Subresource integrity on the kit's files, so a changed file is refused
 function fam_integrity( $tag, $handle, $attr ) {
-	$hash = array( 'fam-kit' => array( 'link' => 'css/cmu-cms.css', 'script' => 'js/cmu-app.js' ) );
+	$hash = array(
+		'fam-kit'     => array( 'link' => 'css/cmu-cms.css', 'script' => 'js/cmu-app.js' ),
+		'fam-kit-app' => array( 'link' => 'css/cmu-app.css' ),
+	);
 	if ( ! isset( $hash[ $handle ][ $attr ] ) ) {
 		return $tag;
 	}

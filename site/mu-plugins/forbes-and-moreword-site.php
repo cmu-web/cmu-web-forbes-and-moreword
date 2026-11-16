@@ -80,3 +80,6 @@ add_action(
 		}
 	}
 );
+
+// The home page's AI Agent Prompt is one of the kit's App components
+add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_style( 'fam-kit-app' ), 20 );

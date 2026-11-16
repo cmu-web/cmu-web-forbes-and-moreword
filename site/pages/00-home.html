@@ -117,3 +117,18 @@ template: page-sections
 <!-- /wp:buttons --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group -->
+
+<!-- wp:group {"className":"content wide","layout":{"type":"default"}} -->
+<div class="wp-block-group content wide"><!-- wp:html -->
+<div>
+  <div class="cmu-agent">
+    <h2 id="agent" class="rule-top">Set Up With an AI Agent</h2>
+    <p>Copy the prompt into an AI coding agent with access to your WordPress site, and it sets up the theme for you. <button type="button" class="cmu-copy" data-cmu-copy="#fam-agent-prompt" aria-label="Copy the Prompt" title="Copy the Prompt"></button></p>
+    <details class="cmu-more">
+      <summary><span class="cmu-more-closed">Want to read it first?</span> <span class="cmu-more-link"><span class="cmu-more-closed">See the Prompt</span><span class="cmu-more-open">Hide the Prompt</span></span></summary>
+      <pre class="cmu-snippet"><code id="fam-agent-prompt">Set up the Forbes &amp; Moreword WordPress theme on this site. Install and activate it with WP-CLI: wp theme install https://github.com/cmu-web/cmu-web-forbes-and-moreword/releases/latest/download/forbes-and-moreword.zip --activate. Set the site title to the site's name and the tagline to the office or program that runs it (wp option update blogname and blogdescription). Build pages from the theme's patterns, under Carnegie Mellon Web Kilt in the block inserter: Split Hero, Text Section, Cards on Gray, Leadership Grid, Callout and Numbered Steps, and its block styles for buttons, ghost buttons, calls to action and headings with a line, instead of writing custom CSS. For any other markup, add the Carnegie Mellon Web Kilt's MCP server, https://webkilt.andrew.cmu.edu/mcp, and use its search_components, get_component and get_conventions tools, then check_html on the result. Write in AP style with Title Case headings and buttons. Add a logo only if the unit has an official one from University Communications &amp; Marketing; never make one up.</code></pre>
+    </details>
+  </div>
+</div>
+<!-- /wp:html --></div>
+<!-- /wp:group -->
