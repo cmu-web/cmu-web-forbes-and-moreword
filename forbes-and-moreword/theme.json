@@ -1,0 +1,89 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.8/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": false,
+    "useRootPaddingAwareAlignments": false,
+    "color": {
+      "custom": false,
+      "customGradient": false,
+      "defaultPalette": false,
+      "defaultGradients": false,
+      "defaultDuotone": false,
+      "gradients": [],
+      "duotone": [],
+      "palette": [
+        { "slug": "cmu-red", "name": "Carnegie Red", "color": "#c41230" },
+        { "slug": "cmu-ink", "name": "Ink", "color": "#22262a" },
+        { "slug": "cmu-gray", "name": "Gray", "color": "#4a535b" },
+        { "slug": "cmu-muted", "name": "Muted", "color": "#5b6670" },
+        { "slug": "cmu-line", "name": "Line", "color": "#d9dde1" },
+        { "slug": "cmu-tint", "name": "Tint", "color": "#f4f5f6" },
+        { "slug": "cmu-blue", "name": "Blue", "color": "#043673" },
+        { "slug": "cmu-green", "name": "Green", "color": "#1d5a3a" },
+        { "slug": "cmu-gold", "name": "Gold", "color": "#fdb515" },
+        { "slug": "white", "name": "White", "color": "#ffffff" }
+      ]
+    },
+    "typography": {
+      "customFontSize": false,
+      "defaultFontSizes": false,
+      "dropCap": false,
+      "fontStyle": false,
+      "fontWeight": false,
+      "letterSpacing": false,
+      "lineHeight": false,
+      "textDecoration": false,
+      "textTransform": false,
+      "writingMode": false,
+      "fontFamilies": [
+        {
+          "slug": "open-sans",
+          "name": "Open Sans",
+          "fontFamily": "\"Open Sans\", Arial, sans-serif"
+        }
+      ],
+      "fontSizes": []
+    },
+    "spacing": {
+      "blockGap": null,
+      "margin": false,
+      "padding": false,
+      "customSpacingSize": false,
+      "defaultSpacingSizes": false,
+      "spacingSizes": [],
+      "units": ["px", "em", "rem", "%"]
+    },
+    "layout": {},
+    "border": {
+      "color": false,
+      "radius": false,
+      "style": false,
+      "width": false
+    },
+    "shadow": {
+      "defaultPresets": false,
+      "presets": []
+    },
+    "blocks": {
+      "core/button": {
+        "color": { "background": false, "text": false },
+        "border": { "radius": false }
+      }
+    }
+  },
+  "styles": {},
+  "customTemplates": [
+    {
+      "name": "page-sections",
+      "title": "Full-Width Sections",
+      "postTypes": ["page"]
+    }
+  ],
+  "templateParts": [
+    { "name": "header", "title": "Header, Red Roof", "area": "header" },
+    { "name": "header-gray", "title": "Header, Gray Roof", "area": "header" },
+    { "name": "header-white", "title": "Header, White Roof", "area": "header" },
+    { "name": "footer", "title": "Footer", "area": "footer" }
+  ]
+}

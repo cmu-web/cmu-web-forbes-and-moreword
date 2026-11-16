@@ -1,0 +1,20 @@
+/*
+Theme Name: Forbes & Moreword
+Theme URI: https://forbesandmoreword.andrew.cmu.edu/
+Author: Carnegie Mellon University
+Author URI: https://github.com/cmu-web
+Description: WordPress sites in Carnegie Mellon's web template, with the Carnegie Mellon Web Kilt's components as block patterns. The template and the kit load from their own servers; this theme adds no styles of its own.
+Requires at least: 6.6
+Tested up to: 7.0
+Requires PHP: 8.1
+Version: 0.1.0
+License: BSD-3-Clause
+License URI: https://opensource.org/license/bsd-3-clause
+Text Domain: forbes-and-moreword
+Tags: block-patterns, full-site-editing, block-styles
+
+Forbes & Moreword is a block theme. Its look comes from CMU's template
+(www.cmu.edu) and the Carnegie Mellon Web Kilt (jsDelivr), loaded in
+functions.php. This file holds only the theme's header, which WordPress
+requires.
+*/
