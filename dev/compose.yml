@@ -1,0 +1,55 @@
+# A local copy of the docs site, built by site/seed.sh, at http://127.0.0.1:3800/.
+# Use dev/run.sh, not this file directly. The database lives in memory, so
+# every "up" starts from an empty one, as the hosted site does.
+name: forbes-and-moreword
+services:
+  db:
+    # mariadb:11.4
+    image: mariadb@sha256:5e73baf8179b29f115101bb102763a47a017361f3e9792daccba6646c3ab1532
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: local-only
+      MARIADB_RANDOM_ROOT_PASSWORD: "1"
+    tmpfs: [/var/lib/mysql]
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 2s
+      retries: 30
+  wordpress:
+    # wordpress:7.0-php8.3-apache (WordPress 7.0.4, PHP 8.3)
+    image: wordpress@sha256:b427cec767f5de2aa649390cb8805aa1fe320e1e0d57fc1f467754edb6cc0a49
+    depends_on:
+      db: { condition: service_healthy }
+    ports: ["127.0.0.1:3800:80"]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: local-only
+      # LOCAL ONLY. Lets dev/run.sh editor sign in at 127.0.0.1 for block
+      # editor screenshots. The hosted site never sets this.
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'FAM_UNSAFE_LOCAL_LOGIN_FOR_SCREENSHOTS', true );
+    volumes:
+      - wp:/var/www/html
+      - ../forbes-and-moreword:/var/www/html/wp-content/themes/forbes-and-moreword:ro
+      - ../site/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+  cli:
+    # wordpress:cli-2.12.0-php8.3
+    image: wordpress@sha256:e4980e3ef763ce7535049c05a54e906d95b16370f28ca02fa329a079eebf3f65
+    profiles: [cli]
+    user: "33:33"
+    depends_on: [wordpress]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: local-only
+    volumes:
+      - wp:/var/www/html
+      - ../forbes-and-moreword:/var/www/html/wp-content/themes/forbes-and-moreword:ro
+      - ../site/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+      - ../site:/site:ro
+volumes:
+  wp:

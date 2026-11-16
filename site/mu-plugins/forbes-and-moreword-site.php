@@ -1,0 +1,82 @@
+<?php
+/**
+ * Plugin Name: Forbes & Moreword Docs Site
+ * Description: The docs site is built from the repository by site/seed.sh, and nobody signs in. This refuses every sign-in and turns off the ways in that don't use one. For the hosted docs site only; it isn't part of the theme.
+ *
+ * @package forbes-and-moreword
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/*
+ * The one way in, for screenshots of the block editor on a copy running on
+ * your own computer: dev/run.sh sets this constant in wp-config.php, and
+ * it works only when the page is opened at 127.0.0.1 or localhost. The
+ * hosted site never sets it, and its server refuses the sign-in page anyway.
+ */
+function fam_site_local_login() {
+	if ( ! defined( 'FAM_UNSAFE_LOCAL_LOGIN_FOR_SCREENSHOTS' ) || true !== FAM_UNSAFE_LOCAL_LOGIN_FOR_SCREENSHOTS ) {
+		return false;
+	}
+	$host = strtolower( (string) wp_parse_url( 'http://' . ( $_SERVER['HTTP_HOST'] ?? '' ), PHP_URL_HOST ) );
+	return in_array( $host, array( '127.0.0.1', 'localhost' ), true );
+}
+
+// No sign-in, with any password, for anyone
+add_filter(
+	'authenticate',
+	function ( $user ) {
+		if ( fam_site_local_login() ) {
+			return $user;
+		}
+		return new WP_Error( 'fam_no_login', __( 'This site is built from its repository. Nobody signs in.', 'forbes-and-moreword' ) );
+	},
+	100
+);
+
+// Nor any other way in: application passwords, XML-RPC, registration
+add_filter( 'wp_is_application_passwords_available', '__return_false' );
+add_filter( 'xmlrpc_enabled', '__return_false' );
+add_filter( 'xmlrpc_methods', '__return_empty_array' );
+if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
+	status_header( 403 );
+	exit;
+}
+add_filter(
+	'wp_headers',
+	function ( $headers ) {
+		unset( $headers['X-Pingback'] );
+		return $headers;
+	}
+);
+add_filter( 'pre_option_users_can_register', fn() => '0' );
+
+// No comments or pings
+add_filter( 'comments_open', '__return_false' );
+add_filter( 'pings_open', '__return_false' );
+
+// Nobody's account names are listed: no users in the REST API, no author pages
+add_filter(
+	'rest_endpoints',
+	function ( $endpoints ) {
+		if ( is_user_logged_in() ) {
+			return $endpoints;
+		}
+		foreach ( array_keys( $endpoints ) as $route ) {
+			if ( str_starts_with( $route, '/wp/v2/users' ) ) {
+				unset( $endpoints[ $route ] );
+			}
+		}
+		return $endpoints;
+	}
+);
+add_action(
+	'template_redirect',
+	function () {
+		if ( is_author() ) {
+			global $wp_query;
+			$wp_query->set_404();
+			status_header( 404 );
+		}
+	}
+);
