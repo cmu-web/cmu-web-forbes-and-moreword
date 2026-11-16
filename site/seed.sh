@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Builds the Forbes & Moreword docs site from this folder with WP-CLI, on an
 # empty WordPress database. Everything on the site comes from here: the pages
-# in pages/, the News posts in posts/, the images in images/, and with --demo
-# the made-up posts in demo/. Nothing is edited in WordPress, so the database can be thrown away
+# in pages/, the News posts in posts/, the site's own footer and 404 in parts/
+# and templates/, the images in images/, and with --demo the made-up posts in
+# demo/. Nothing is edited in WordPress, so the database can be thrown away
 # and rebuilt at any time.
 #
 #   seed.sh URL [--demo]
@@ -28,7 +29,7 @@ random | wp core install --url="$url" --title="Forbes & Moreword" \
   --skip-email --prompt=admin_password >/dev/null
 wp user update fam-admin --display_name="CMU Web" --quiet
 
-wp option update blogdescription "WordPress in CMU style" --quiet
+wp option update blogdescription "You have the write of way." --quiet
 wp option update timezone_string America/New_York --quiet
 wp option update default_comment_status closed --quiet
 wp option update default_ping_status closed --quiet
@@ -93,6 +94,14 @@ for f in "$here"/parts/*.html; do
     --post_title="$part" --post_name="$part" --porcelain)
   wp post term set "$id" wp_theme forbes-and-moreword --quiet
   wp post term set "$id" wp_template_part_area "$part" --quiet
+done
+# The site's own templates, such as its 404 page, in place of the theme's
+for f in "$here"/templates/*.html; do
+  [ -f "$f" ] || continue
+  name=$(basename "$f" .html)
+  id=$(wp post create "$f" --post_type=wp_template --post_status=publish \
+    --post_title="$name" --post_name="$name" --porcelain)
+  wp post term set "$id" wp_theme forbes-and-moreword --quiet
 done
 wp option update show_on_front page --quiet
 wp option update page_on_front "${front:?pages/ needs a page with slug: home}" --quiet
