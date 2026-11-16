@@ -3,7 +3,7 @@
  * Title: Leadership Grid
  * Slug: forbes-and-moreword/leadership-grid
  * Categories: cmu-kilt
- * Description: People on a gray band: a photo, a name and a title for each.
+ * Description: People in a gray section: a photo, a name and a title for each.
  */
 ?>
 <!-- wp:group {"className":"grid column3 grey boxes","layout":{"type":"default"}} -->

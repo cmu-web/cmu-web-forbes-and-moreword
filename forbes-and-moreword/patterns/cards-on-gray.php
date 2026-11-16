@@ -3,7 +3,7 @@
  * Title: Cards on Gray
  * Slug: forbes-and-moreword/cards-on-gray
  * Categories: cmu-kilt
- * Description: Three cards on a gray band, each with a heading, a sentence and a call to action.
+ * Description: Three cards in a gray section, each with a heading, a sentence and a call to action.
  */
 ?>
 <!-- wp:group {"className":"grid column3 grey boxes","layout":{"type":"default"}} -->
