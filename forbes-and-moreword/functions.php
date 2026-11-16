@@ -57,6 +57,7 @@ add_action(
 	function () {
 		add_editor_style( array( FAM_TEMPLATE . '/css/main.6.7.min.css', fam_kit_url( 'css/cmu-cms.css' ) ) );
 		remove_theme_support( 'core-block-patterns' );
+		add_theme_support( 'custom-logo' );
 	}
 );
 
@@ -214,6 +215,33 @@ add_filter(
 		$caption = wp_get_attachment_caption( $id );
 		return '<figure class="image">' . wp_get_attachment_image( $id, 'large' )
 			. ( $caption ? '<figcaption>' . esc_html( $caption ) . '</figcaption>' : '' ) . '</figure>';
+	},
+	10,
+	2
+);
+
+// The site's name, the line under it and, if the site has one, its logo, in
+// the template's #sitename markup. With a logo, the name and line go in a div
+// and the linked logo follows it with no space between, as the Web Kilt's
+// Site Name says: a space pushes the logo onto its own line. The blocks in the
+// header show in the editor; on the site, PHP writes this from the settings.
+add_filter(
+	'render_block_core/group',
+	function ( $html, $block ) {
+		if ( 'sitename' !== ( $block['attrs']['anchor'] ?? '' ) ) {
+			return $html;
+		}
+		$home = esc_url( home_url( '/' ) );
+		$name = '<span class="sitetitle"><a href="' . $home . '">' . esc_html( get_bloginfo( 'name' ) ) . '</a></span>';
+		$line = get_bloginfo( 'description' );
+		$name .= $line ? '<h2>' . esc_html( $line ) . '</h2>' : '';
+		$logo  = (int) get_theme_mod( 'custom_logo', get_option( 'site_logo' ) );
+		if ( ! $logo || ! wp_attachment_is_image( $logo ) ) {
+			return '<div id="sitename">' . $name . '</div>';
+		}
+		$alt = get_post_meta( $logo, '_wp_attachment_image_alt', true ) ?: get_bloginfo( 'name' ) . ' logo';
+		$img = wp_get_attachment_image( $logo, 'full', false, array( 'alt' => $alt, 'loading' => 'eager', 'class' => '' ) );
+		return '<div id="sitename"><div>' . $name . '</div><a href="' . $home . '">' . $img . '</a></div>';
 	},
 	10,
 	2

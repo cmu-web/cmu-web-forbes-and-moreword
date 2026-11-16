@@ -112,6 +112,11 @@ if [ "$demo" = --demo ]; then
   wp user create ac00 ac00@example.edu --display_name="Andrew Carnegie" --role=author --user_pass="$(random)" --porcelain >/dev/null
   wp user create am00 am00@example.edu --display_name="Andrew Mellon" --role=author --user_pass="$(random)" --porcelain >/dev/null
   for f in "$here"/demo/posts/*.html; do create "$f" post >/dev/null; done
+  # A placeholder logo from PlaceMellon (Scotty), never a real unit's logo
+  logo=$(wp media import "https://placemellon.andrew.cmu.edu/110.png?scotty=bust" \
+    --title="Logo placeholder" --alt="Logo placeholder" --porcelain)
+  wp option update site_logo "$logo" --quiet
+  wp theme mod set custom_logo "$logo" --quiet
 fi
 wp rewrite flush --quiet
 echo "seed.sh: built $(wp post list --post_type=page --format=count) pages and $(wp post list --post_type=post --format=count) posts"
