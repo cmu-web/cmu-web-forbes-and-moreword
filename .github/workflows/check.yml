@@ -1,0 +1,19 @@
+# Checks the theme's and the docs site's PHP and the theme.json on every push.
+name: Check
+
+on:
+  push:
+    branches: [0.x]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: for f in forbes-and-moreword/*.php forbes-and-moreword/patterns/*.php site/mu-plugins/*.php; do php -l "$f"; done
+      - run: python3 -m json.tool forbes-and-moreword/theme.json >/dev/null
+      - run: bash -n site/seed.sh dev/run.sh

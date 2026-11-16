@@ -1,0 +1,27 @@
+# Zips the theme and attaches forbes-and-moreword.zip to the tag's GitHub
+# release. The tag has to match Version: in the theme's style.css.
+name: Release
+
+on:
+  push:
+    tags: ["[0-9]*"]
+
+permissions:
+  contents: write
+
+jobs:
+  theme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Check the version
+        run: |
+          version=$(sed -n 's/^Version: *//p' forbes-and-moreword/style.css)
+          if [ "$version" != "$GITHUB_REF_NAME" ]; then
+            echo "style.css says $version, but the tag is $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+      - run: zip -r forbes-and-moreword.zip forbes-and-moreword
+      - run: gh release create "$GITHUB_REF_NAME" forbes-and-moreword.zip --title "$GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
