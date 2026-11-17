@@ -1,0 +1,10 @@
+{
+  "name": "cmu-web-forbes-and-moreword",
+  "private": true,
+  "scripts": {
+    "test:browser": "node tests/browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.65.0"
+  }
+}

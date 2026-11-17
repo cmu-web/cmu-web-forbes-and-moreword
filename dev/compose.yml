@@ -53,5 +53,6 @@ services:
       - ../forbes-and-moreword:/var/www/html/wp-content/themes/forbes-and-moreword:ro
       - ../site/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
       - ../site:/site:ro
+      - ../tests:/tests:ro
 volumes:
   wp:

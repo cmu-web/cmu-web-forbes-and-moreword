@@ -1,4 +1,4 @@
-# Checks the theme's and the docs site's PHP and the theme.json on every push.
+# Checks syntax, the pinned kit files and real WordPress rendering.
 name: Check
 
 on:
@@ -14,6 +14,48 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - run: for f in forbes-and-moreword/*.php forbes-and-moreword/patterns/*.php site/mu-plugins/*.php; do php -l "$f"; done
+      - run: for f in forbes-and-moreword/*.php forbes-and-moreword/patterns/*.php site/mu-plugins/*.php tests/*.php; do php -l "$f"; done
       - run: python3 -m json.tool forbes-and-moreword/theme.json >/dev/null
+      - run: node --check forbes-and-moreword/editor.js
       - run: bash -n site/seed.sh dev/run.sh
+      - name: Check the pinned Web Kilt release
+        run: |
+          version=$(sed -n "s/^const FAM_KIT *= *'\([^']*\)';/\1/p" forbes-and-moreword/functions.php)
+          curl --fail --silent --show-error --retry 3 "https://raw.githubusercontent.com/cmu-web/cmu-web-kilt/$version/package.json" | node tests/check-kit.cjs
+
+  wordpress:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        wordpress: ["6.6", "7.0.4"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - name: Start an isolated docs site
+        run: |
+          docker compose -f dev/compose.yml up -d --wait
+          for attempt in $(seq 1 60); do
+            if docker compose -f dev/compose.yml exec -T wordpress test -f /var/www/html/wp-config.php; then break; fi
+            sleep 1
+          done
+          docker compose -f dev/compose.yml exec -T wordpress test -f /var/www/html/wp-config.php
+          docker compose -f dev/compose.yml run --rm -T cli wp core download --version="${{ matrix.wordpress }}" --force --skip-content
+          docker compose -f dev/compose.yml run --rm -T cli bash /site/seed.sh http://127.0.0.1:3800
+      - run: dev/run.sh check
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - name: Save desktop and mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: wordpress-${{ matrix.wordpress }}-screenshots
+          path: test-results/
+          if-no-files-found: ignore
+      - name: Stop the test site
+        if: always()
+        run: docker compose -f dev/compose.yml down -v
