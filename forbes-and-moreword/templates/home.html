@@ -2,29 +2,35 @@
 <div id="container" class="wp-block-group"><!-- wp:template-part {"slug":"header","tagName":"header","area":"header"} /-->
 
 <!-- wp:group {"tagName":"main","anchor":"content","layout":{"type":"default"}} -->
-<main id="content" class="wp-block-group"><!-- wp:group {"className":"content wide","layout":{"type":"default"}} -->
-<div class="wp-block-group content wide"><!-- wp:group {"layout":{"type":"default"}} -->
-<div class="wp-block-group"><!-- wp:heading {"level":1} -->
+<main id="content" class="wp-block-group"><!-- wp:group {"className":"breadcrumbs","layout":{"type":"default"}} -->
+<div class="wp-block-group breadcrumbs"><!-- wp:paragraph -->
+<p>Breadcrumbs: written on the site from the page's place in it.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:query {"queryId":1,"query":{"perPage":12,"postType":"post","inherit":true}} -->
+<div class="wp-block-query"><!-- wp:group {"className":"grid column3 news","layout":{"type":"default"}} -->
+<div class="wp-block-group grid column3 news"><!-- wp:heading {"level":1} -->
 <h1 class="wp-block-heading">News</h1>
 <!-- /wp:heading -->
 
-<!-- wp:query {"queryId":1,"query":{"perPage":10,"postType":"post","inherit":true}} -->
-<div class="wp-block-query"><!-- wp:post-template {"className":"cmu-plain"} -->
-<!-- wp:post-title {"level":2,"isLink":true,"className":"rule-top"} /-->
+<!-- wp:post-template -->
+<!-- wp:post-featured-image {"isLink":true} /-->
 
 <!-- wp:post-date /-->
 
+<!-- wp:post-title {"level":2,"isLink":true} /-->
+
 <!-- wp:post-excerpt /-->
-<!-- /wp:post-template -->
+<!-- /wp:post-template --></div>
+<!-- /wp:group -->
 
 <!-- wp:query-pagination -->
 <!-- wp:query-pagination-previous /-->
 
 <!-- wp:query-pagination-next /-->
 <!-- /wp:query-pagination --></div>
-<!-- /wp:query --></div>
-<!-- /wp:group --></div>
-<!-- /wp:group --></main>
+<!-- /wp:query --></main>
 <!-- /wp:group -->
 
 <!-- wp:template-part {"slug":"footer","tagName":"footer","className":"grid column3 invert","area":"footer"} /--></div>

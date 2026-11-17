@@ -8,8 +8,8 @@
 ?>
 <!-- wp:group {"className":"content wide","layout":{"type":"default"}} -->
 <div class="wp-block-group content wide"><!-- wp:group {"layout":{"type":"default"}} -->
-<div class="wp-block-group"><!-- wp:heading {"className":"is-style-rule-top"} -->
-<h2 class="wp-block-heading is-style-rule-top" id="get-started">Get Started</h2>
+<div class="wp-block-group"><!-- wp:heading {"level":1,"className":"is-style-rule-top","anchor":"get-started"} -->
+<h1 class="wp-block-heading is-style-rule-top" id="get-started">Get Started</h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
