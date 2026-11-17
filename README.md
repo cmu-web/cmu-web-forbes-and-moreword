@@ -108,9 +108,22 @@ from `site/`: `seed.sh` builds it with WP-CLI on an empty database, from
 the pages in `site/pages/`, the News posts in `site/posts/`, the images in
 `site/images/` and the site's own footer and 404 in `site/parts/` and
 `site/templates/`. Files in `site/static/images/` (the street sign artwork and
-the link preview images) are served as they are, at `/images/`. To change the site, change those files. Nobody
-signs in: `site/mu-plugins/` refuses every sign-in and turns off
-application passwords, XML-RPC and the REST API's user list.
+the link preview images) are served as they are, at `/images/`. To change the
+site, change those files. Nobody signs in: `site/mu-plugins/` refuses every
+sign-in and turns off application passwords, XML-RPC and the REST API's user
+list.
+
+The hosted site is one image, built by the `Dockerfile`: WordPress with Apache,
+the theme and the site, seeded into a SQLite database when the image is built.
+The container runs with a read-only root filesystem as `www-data`; at start it
+copies the database into `/tmp`, so a restart puts the site back as built. It
+answers 404 for the admin, sign-in, XML-RPC and REST paths. To try it:
+
+    docker build -t forbes-and-moreword .
+    docker run --rm --read-only --tmpfs /tmp --cap-drop=ALL \
+      --security-opt no-new-privileges -p 127.0.0.1:3804:8080 \
+      -e FAM_URL=http://127.0.0.1:3804 forbes-and-moreword
+    docker/check.sh http://127.0.0.1:3804
 
 The site demonstrates the theme through its own pages: a silent video hero,
 full-width sections, cards and a live news feed. Installation instructions
@@ -153,7 +166,10 @@ with the pinned release's manifest.
 Push a version tag, such as `0.1.0`, that matches `Version:` in
 `forbes-and-moreword/style.css`. The
 [release workflow](.github/workflows/release.yml) zips the theme and
-attaches `forbes-and-moreword.zip` to the tag's GitHub release.
+attaches `forbes-and-moreword.zip` to the tag's GitHub release, and the
+[publish workflow](.github/workflows/publish.yml) pushes the docs site's image
+to `ghcr.io/cmu-web/cmu-web-forbes-and-moreword`. The fleet pins the image by
+digest.
 
 ## License
 

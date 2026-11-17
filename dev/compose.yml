@@ -35,7 +35,7 @@ services:
       - wp:/var/www/html
       - ../forbes-and-moreword:/var/www/html/wp-content/themes/forbes-and-moreword:ro
       - ../site/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
-      # Files served as they are, like the hosted site's nginx alias
+      # Files served as they are, as the hosted site's image does
       - ../site/static/images:/var/www/html/images:ro
   cli:
     # wordpress:cli-2.12.0-php8.3
