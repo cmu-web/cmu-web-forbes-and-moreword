@@ -3,17 +3,16 @@
 Things the theme would use if the Web Kilt had them. The theme adds no CSS
 of its own, so these wait for the kit.
 
-- **A list of posts.** A news or blog list (title as a link, date, a
-  sentence) with no list indent. The template indents list items, so the
-  query loop's list sits about 20 pixels in.
-- **Breadcrumbs for a CMS without them built in.** The template has the
-  look; the theme would need a block that writes the trail.
+- ~~**A list of posts.**~~ The kit's News Grid, the template's own, covers it:
+  the theme renders the Latest Posts block and the News page's Query Loop as
+  the News Grid.
+- ~~**Breadcrumbs for a CMS without them built in.**~~ The theme writes the
+  template's trail itself, from a marker group in each template.
 - ~~**A byline.**~~ Web Kilt 0.7.0 adds the Article component (category,
   date, headline, summary and byline); the theme uses it.
-- **Buttons in the block editor.** The editor shows WordPress's own button
-  styles; a small editor stylesheet from the kit (for `.wp-block-button`
-  with the btn, ghost and cta styles) would make the editor match the page.
-- **The hero's note.** The split hero's `cmu-cta-note` sits inside
-  `cmu-cta-row`; WordPress's Buttons block holds only buttons, so the theme's
-  pattern leaves the note out. A version of the note that follows the row
-  would fit.
+- ~~**Buttons in the block editor.**~~ The editor loads the template's and
+  the kit's styles, and the theme's `editor.js` gives the editor's buttons,
+  calls to action and headings with a line the template's look, read from the
+  template's own styles.
+- ~~**The hero's note.**~~ A paragraph with `cmu-cta-note` right after a
+  Buttons block with `cmu-cta-row` moves into the row as the page renders.

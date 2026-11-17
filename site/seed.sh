@@ -79,6 +79,17 @@ create() { # file, post type
     wp post meta update "$id" _thumbnail_id "${image_id[$photo]:?no images/$photo}" --quiet
     [ -n "$(field "$file" caption)" ] && wp post update "${image_id[$photo]}" --post_excerpt="$(field "$file" caption)" --quiet
   fi
+  # A post's picture when it has no photo of its own: a PlaceMellon
+  # placeholder photo in the header's category, for the news grid; random, so
+  # two posts in one category don't get the same photo
+  local placeholder
+  placeholder=$(field "$file" placeholder)
+  if [ -n "$placeholder" ]; then
+    local photo_id
+    photo_id=$(wp media import "https://placemellon.andrew.cmu.edu/1200/800.jpg?category=$placeholder&random" \
+      --title="Placeholder photo" --alt="Placeholder photo of the Carnegie Mellon campus." --porcelain)
+    wp post meta update "$id" _thumbnail_id "$photo_id" --quiet
+  fi
   echo "$id"
 }
 
@@ -95,6 +106,14 @@ for f in "$here"/parts/*.html; do
   wp post term set "$id" wp_theme forbes-and-moreword --quiet
   wp post term set "$id" wp_template_part_area "$part" --quiet
 done
+# The site's menu, which the navigation shows: a tab's label is the menu's,
+# not the page's title, so the two can differ
+menu=""
+for tab in "install:Install" "patterns:Patterns" "news:News" "about:About"; do
+  menu+="<!-- wp:navigation-link {\"label\":\"${tab#*:}\",\"url\":\"/${tab%%:*}/\",\"kind\":\"custom\"} /-->"
+done
+wp post create --post_type=wp_navigation --post_status=publish --post_title="Main Menu" \
+  --post_content="$menu" --porcelain >/dev/null
 # The site's own templates, such as its 404 page, in place of the theme's
 for f in "$here"/templates/*.html; do
   [ -f "$f" ] || continue

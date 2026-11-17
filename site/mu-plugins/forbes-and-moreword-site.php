@@ -81,47 +81,26 @@ add_action(
 	}
 );
 
-// The home page's AI Agent Prompt is one of the kit's App components
+// Install's AI agent prompt is one of the kit's App components
 add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_style( 'fam-kit-app' ), 20 );
 
-// Link previews, as the Web Kilt's Link Previews standard has them: every
-// page shares the home page's picture, /images/preview.jpg (1200 x 630)
-add_action(
-	'wp_head',
-	function () {
-		$site = get_bloginfo( 'name' );
-		$text = 'A WordPress block theme built from Carnegie Mellon\'s web template and the Carnegie Mellon Web Kilt.';
-		$home = is_front_page();
-		$post = get_queried_object();
-		if ( ! $home && $post instanceof WP_Post && has_excerpt( $post ) ) {
-			$text = get_the_excerpt( $post );
+// Link previews: the theme writes the tags (see its functions.php). This
+// site's picture is a file served as it is, /images/preview.jpg, not one in
+// the media library, and its home page has its own sentence.
+add_filter(
+	'fam_link_preview',
+	function ( $fields ) {
+		if ( empty( $fields['image'] ) ) {
+			$fields['image'] = array(
+				'url'    => home_url( '/images/preview.jpg' ),
+				'width'  => 1200,
+				'height' => 630,
+				'alt'    => 'Forbes & Moreword\'s home page: WordPress Sites in CMU Style over a photo of Hamerschlag Hall.',
+			);
 		}
-		$url   = $home ? home_url( '/' ) : ( $post instanceof WP_Post ? get_permalink( $post ) : home_url( add_query_arg( array() ) ) );
-		$title = $home || ! ( $post instanceof WP_Post ) ? $site : get_the_title( $post );
-		// A post is an article: its date and author, which some apps show
-		$is_post = ! $home && $post instanceof WP_Post && 'post' === $post->post_type;
-		$tags  = array(
-			array( 'name', 'description', $text ),
-			array( 'property', 'og:type', $is_post ? 'article' : 'website' ),
-			array( 'property', 'og:site_name', $site ),
-			array( 'property', 'og:title', $title ),
-			array( 'property', 'og:description', $text ),
-			array( 'property', 'og:url', $url ),
-			array( 'property', 'og:image', home_url( '/images/preview.jpg' ) ),
-			array( 'property', 'og:image:width', '1200' ),
-			array( 'property', 'og:image:height', '630' ),
-			array( 'property', 'og:image:alt', 'Forbes & Moreword\'s home page: WordPress Sites in CMU Style, next to two street signs reading Forbes Ave and Moreword Ave.' ),
-			array( 'name', 'twitter:card', 'summary_large_image' ),
-		);
-		if ( $is_post ) {
-			$tags[] = array( 'property', 'article:published_time', get_the_date( 'c', $post ) );
-			$tags[] = array( 'name', 'author', get_the_author_meta( 'display_name', $post->post_author ) );
+		if ( is_front_page() ) {
+			$fields['description'] = 'A WordPress block theme built from Carnegie Mellon\'s web template and the Carnegie Mellon Web Kilt.';
 		}
-		echo "<!-- Link previews -->\n";
-		foreach ( $tags as $t ) {
-			printf( "<meta %s=\"%s\" content=\"%s\" />\n", $t[0], esc_attr( $t[1] ), esc_attr( $t[2] ) );
-		}
-		echo "<!-- End of link previews -->\n";
-	},
-	1
+		return $fields;
+	}
 );
