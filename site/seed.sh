@@ -119,10 +119,11 @@ wp post create --post_type=wp_navigation --post_status=publish --post_title="Mai
 for f in "$here"/templates/*.html; do
   [ -f "$f" ] || continue
   name=$(basename "$f" .html)
-  sed "s#{{url}}#${url%/}#g" "$f" >"$f.tmp"
-  id=$(wp post create "$f.tmp" --post_type=wp_template --post_status=publish \
+  tmp=$(mktemp)
+  sed "s#{{url}}#${url%/}#g" "$f" >"$tmp"
+  id=$(wp post create "$tmp" --post_type=wp_template --post_status=publish \
     --post_title="$name" --post_name="$name" --porcelain)
-  rm -f "$f.tmp"
+  rm -f "$tmp"
   wp post term set "$id" wp_theme forbes-and-moreword --quiet
 done
 wp option update show_on_front page --quiet
