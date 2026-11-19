@@ -20,7 +20,7 @@ $table_prefix = 'wp_';
 require '/tmp/fam/salts.php';
 
 // FAM_URL changes the address for a local run; the hosted site uses its own
-define( 'WP_HOME', getenv( 'FAM_URL' ) ?: 'https://forbesandmoreword.andrew.cmu.edu' );
+define( 'WP_HOME', getenv( 'FAM_URL' ) ?: 'https://themes.andrew.cmu.edu/forbes-and-moreword' );
 define( 'WP_SITEURL', WP_HOME );
 // The host's nginx ends HTTPS and says so
 if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && 'https' === $_SERVER['HTTP_X_FORWARDED_PROTO'] ) {

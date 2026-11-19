@@ -6,7 +6,7 @@ Kilt](https://webkilt.andrew.cmu.edu/). Write in the block editor, and your
 pages match the rest of cmu.edu. It's named for the corner of Forbes and
 Morewood. Same intersection, more words.
 
-Docs: https://forbesandmoreword.andrew.cmu.edu/
+Docs: https://themes.andrew.cmu.edu/forbes-and-moreword/
 
 ![A home page made with the theme: the CMU roof, the site's name and tabs, then a hero with a video.](images/home.jpg)
 
@@ -103,7 +103,7 @@ anchors and accessibility attributes.
 
 ## The Docs Site
 
-forbesandmoreword.andrew.cmu.edu runs this theme. Everything on it comes
+themes.andrew.cmu.edu/forbes-and-moreword runs this theme. Everything on it comes
 from `site/`: `seed.sh` builds it with WP-CLI on an empty database, from
 the pages in `site/pages/`, the News posts in `site/posts/`, the images in
 `site/images/` and the site's own footer and 404 in `site/parts/` and

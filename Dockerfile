@@ -1,4 +1,4 @@
-# The docs site at forbesandmoreword.andrew.cmu.edu as one image: WordPress,
+# The docs site at themes.andrew.cmu.edu/forbes-and-moreword as one image: WordPress,
 # the theme, the site's must-use plugin and its content, built from site/ at
 # build time into a SQLite database. Nothing is edited in WordPress, so the
 # container's root filesystem is read-only; at start it copies the built
@@ -45,7 +45,7 @@ COPY docker/start.sh /opt/fam/start.sh
 RUN set -eux; \
     export WP_CLI_ALLOW_ROOT=1 FAM_BUILD=1; \
     sh /opt/fam/start.sh --prepare; \
-    bash /opt/fam/site/seed.sh https://forbesandmoreword.andrew.cmu.edu; \
+    bash /opt/fam/site/seed.sh https://themes.andrew.cmu.edu/forbes-and-moreword; \
     mv /tmp/fam/site.sqlite /opt/fam/site.sqlite; \
     rm -rf /tmp/fam /opt/fam/site/demo; \
     cp -a /opt/fam/site/static/images /opt/fam/images

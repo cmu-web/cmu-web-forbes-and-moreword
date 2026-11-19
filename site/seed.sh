@@ -107,10 +107,11 @@ for f in "$here"/parts/*.html; do
   wp post term set "$id" wp_template_part_area "$part" --quiet
 done
 # The site's menu, which the navigation shows: a tab's label is the menu's,
-# not the page's title, so the two can differ
+# not the page's title, so the two can differ. Full addresses under the
+# site's root, since the menu shows at every depth
 menu=""
 for tab in "install:Install" "patterns:Patterns" "news:News" "about:About"; do
-  menu+="<!-- wp:navigation-link {\"label\":\"${tab#*:}\",\"url\":\"/${tab%%:*}/\",\"kind\":\"custom\"} /-->"
+  menu+="<!-- wp:navigation-link {\"label\":\"${tab#*:}\",\"url\":\"${url%/}/${tab%%:*}/\",\"kind\":\"custom\"} /-->"
 done
 wp post create --post_type=wp_navigation --post_status=publish --post_title="Main Menu" \
   --post_content="$menu" --porcelain >/dev/null
@@ -118,8 +119,10 @@ wp post create --post_type=wp_navigation --post_status=publish --post_title="Mai
 for f in "$here"/templates/*.html; do
   [ -f "$f" ] || continue
   name=$(basename "$f" .html)
-  id=$(wp post create "$f" --post_type=wp_template --post_status=publish \
+  sed "s#{{url}}#${url%/}#g" "$f" >"$f.tmp"
+  id=$(wp post create "$f.tmp" --post_type=wp_template --post_status=publish \
     --post_title="$name" --post_name="$name" --porcelain)
+  rm -f "$f.tmp"
   wp post term set "$id" wp_theme forbes-and-moreword --quiet
 done
 wp option update show_on_front page --quiet
