@@ -28,7 +28,7 @@ PHP 8.1 or later. [Deployment](DEPLOYMENT.md#install) has the steps.
 | Latest Posts block, and the News page    | The template's News Grid: a picture, the date, the title and a sentence for each story |
 | Appearance › Customize › Link Previews   | The Preview Image, for link previews in Slack, Teams and social sites                  |
 | The Full-Width Sections page template    | A page made of full-width sections, like the kit's home pages                          |
-| Patterns, under Carnegie Mellon Web Kilt | FAQ, Text Section, Cards on Gray, Leadership Team, Callout and Numbered Steps          |
+| Patterns, under Carnegie Mellon Web Kilt | FAQ, Text Section, Card Grid, Leadership Team, Callout and Numbered Steps              |
 | Button styles                            | Button, Ghost Button and Call to Action                                                |
 | Heading style                            | With a Line, for section headings                                                      |
 | Header template parts                    | A red, gray or white roof                                                              |

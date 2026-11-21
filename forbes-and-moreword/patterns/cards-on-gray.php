@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Cards on Gray
+ * Title: Card Grid
  * Slug: forbes-and-moreword/cards-on-gray
  * Categories: cmu-kilt
  * Description: Three cards in a gray section, each with a heading, a sentence and a call to action.
