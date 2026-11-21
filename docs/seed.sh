@@ -29,7 +29,7 @@ random | wp core install --url="$url" --title="Forbes & Moreword" \
   --skip-email --prompt=admin_password >/dev/null
 wp user update fam-admin --display_name="CMU Web" --quiet
 
-wp option update blogdescription "You have the write of way." --quiet
+wp option update blogdescription "You have the write of way" --quiet
 wp option update timezone_string America/New_York --quiet
 wp option update default_comment_status closed --quiet
 wp option update default_ping_status closed --quiet
