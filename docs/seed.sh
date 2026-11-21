@@ -9,7 +9,7 @@
 #   seed.sh URL [--demo]
 #
 # Run it in the WordPress folder (WP-CLI's working directory), with the theme
-# in wp-content/themes/forbes-and-moreword and site/mu-plugins in
+# in wp-content/themes/forbes-and-moreword and docs/mu-plugins in
 # wp-content/mu-plugins. The admin account WordPress requires gets a random
 # password that is never printed or saved: nobody signs in.
 set -euo pipefail

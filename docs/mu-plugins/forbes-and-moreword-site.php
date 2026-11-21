@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Forbes & Moreword Docs Site
- * Description: The docs site is built from the repository by site/seed.sh, and nobody signs in. This refuses every sign-in and turns off the ways in that don't use one. For the hosted docs site only; it isn't part of the theme.
+ * Description: The docs site is built from the repository by docs/seed.sh, and nobody signs in. This refuses every sign-in and turns off the ways in that don't use one. For the hosted docs site only; it isn't part of the theme.
  *
  * @package forbes-and-moreword
  */
@@ -95,7 +95,7 @@ add_filter(
 				'url'    => home_url( '/images/preview.jpg' ),
 				'width'  => 1200,
 				'height' => 630,
-				'alt'    => 'Forbes & Moreword\'s home page: WordPress Sites in CMU Style over a photo of Hamerschlag Hall.',
+				'alt'    => 'Forbes & Moreword\'s home page: WordPress Sites in CMU Style, over the Tartans logo on a basketball court.',
 			);
 		}
 		if ( is_front_page() ) {
@@ -103,4 +103,26 @@ add_filter(
 		}
 		return $fields;
 	}
+);
+
+/*
+ * The CMU Web Google tag, the same one the other CMU Web docs sites use. It's
+ * here, not in the theme, so it counts visits to this docs site and never
+ * to a site built on the theme. The footer's Legal Info link covers it.
+ */
+add_action(
+	'wp_head',
+	function () {
+		?>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-MTRD2JHT"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+	gtag("js", new Date());
+</script>
+		<?php
+	},
+	1
 );

@@ -18,7 +18,7 @@ case "${1:-}" in
     compose up -d --wait
     # The WordPress image copies its files into the volume on first start
     until compose exec -T wordpress test -f /var/www/html/wp-config.php; do sleep 1; done
-    compose run --rm -T cli bash /site/seed.sh http://127.0.0.1:3800 --demo
+    compose run --rm -T cli bash /docs/seed.sh http://127.0.0.1:3800 --demo
     echo "Forbes & Moreword on http://127.0.0.1:3800/"
     ;;
   editor)

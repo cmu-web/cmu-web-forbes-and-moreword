@@ -1,5 +1,5 @@
-# The docs site at themes.andrew.cmu.edu/forbes-and-moreword as one image: WordPress,
-# the theme, the site's must-use plugin and its content, built from site/ at
+# The docs site at themes.andrew.cmu.edu/forbes-and-moreword/0 as one image: WordPress,
+# the theme, the site's must-use plugin and its content, built from docs/ at
 # build time into a SQLite database. Nothing is edited in WordPress, so the
 # container's root filesystem is read-only; at start it copies the built
 # database into memory (/tmp), and a restart puts it back as built.
@@ -36,19 +36,19 @@ RUN set -eux; \
         -e "s#{SQLITE_PLUGIN}#sqlite-database-integration/load.php#" \
         wp-content/sqlite-database-integration/db.copy > wp-content/db.php
 COPY forbes-and-moreword wp-content/themes/forbes-and-moreword
-COPY site/mu-plugins wp-content/mu-plugins
+COPY docs/mu-plugins wp-content/mu-plugins
 COPY docker/wp-config.php wp-config.php
-COPY site /opt/fam/site
+COPY docs /opt/fam/docs
 COPY docker/start.sh /opt/fam/start.sh
 # The build's database and salts are thrown away with this stage's /tmp; the
 # seeded database moves to /opt/fam. FAM_BUILD lets WordPress reach PlaceMellon.
 RUN set -eux; \
     export WP_CLI_ALLOW_ROOT=1 FAM_BUILD=1; \
     sh /opt/fam/start.sh --prepare; \
-    bash /opt/fam/site/seed.sh https://themes.andrew.cmu.edu/forbes-and-moreword; \
+    bash /opt/fam/docs/seed.sh https://themes.andrew.cmu.edu/forbes-and-moreword/0; \
     mv /tmp/fam/site.sqlite /opt/fam/site.sqlite; \
-    rm -rf /tmp/fam /opt/fam/site/demo; \
-    cp -a /opt/fam/site/static/images /opt/fam/images
+    rm -rf /tmp/fam /opt/fam/docs/demo; \
+    cp -a /opt/fam/docs/static/images /opt/fam/images
 
 FROM wordpress AS production
 # WP-CLI, for looking around with podman exec; what it changes lasts only

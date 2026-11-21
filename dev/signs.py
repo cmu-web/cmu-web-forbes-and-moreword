@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-# Draws site/static/images/forbes-and-moreword-signs.svg: two crossed street signs on
+# Draws docs/static/images/forbes-and-moreword-signs.svg: two crossed street signs on
 # a post, FORBES AVE facing us and MOREWORD AVE running back from it, in the
 # Web Kilt's colors with Open Sans Bold as outlines (so no font is needed)
-#   python3 dev/signs.py site/static/images/forbes-and-moreword-signs.svg
+#   python3 dev/signs.py docs/static/images/forbes-and-moreword-signs.svg
 import sys
 from fontTools.ttLib import TTFont
 from fontTools.pens.svgPathPen import SVGPathPen
