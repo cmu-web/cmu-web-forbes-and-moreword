@@ -1,7 +1,7 @@
 # Builds the docs site's image (Dockerfile) on every run and pushes it to
 # ghcr.io/cmu-web/cmu-web-forbes-and-moreword for releases (version tags or a
-# manual run). The fleet pins it by digest.
-name: Publish
+# manual run). A deployment pins it by digest.
+name: Publish Image
 
 on:
   push:
@@ -16,6 +16,7 @@ permissions:
 jobs:
   image:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       RELEASE: ${{ startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch' }}
     permissions:
