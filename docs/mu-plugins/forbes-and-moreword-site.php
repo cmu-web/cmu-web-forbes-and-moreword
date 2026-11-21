@@ -114,7 +114,7 @@ add_action(
 	'wp_head',
 	function () {
 		?>
-<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-MTRD2JHT"></script>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KXCHXXF5"></script>
 <script>
 	window.dataLayer = window.dataLayer || [];
 	function gtag() {
