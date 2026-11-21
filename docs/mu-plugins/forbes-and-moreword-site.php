@@ -106,9 +106,8 @@ add_filter(
 );
 
 /*
- * The CMU Web Google tag, the same one the other CMU Web docs sites use. It's
- * here, not in the theme, so it counts visits to this docs site and never
- * to a site built on the theme. The footer's Legal Info link covers it.
+ * This docs site's own Google tag. It's here, not in the theme, so it counts
+ * visits to this docs site and never to a site built on the theme. The footer's Legal Info link covers it.
  */
 add_action(
 	'wp_head',
@@ -125,4 +124,21 @@ add_action(
 		<?php
 	},
 	1
+);
+
+/*
+ * About's More From CMU Web: the cards come from CMU Web's project list,
+ * through CMU Web's script. It's here because WordPress strips scripts from a
+ * page's content; the page keeps the section's heading and sentence.
+ */
+add_action(
+	'wp_footer',
+	function () {
+		if ( ! is_page( 'about' ) ) {
+			return;
+		}
+		?>
+<script src="https://cmu-web.github.io/js/more-from-cmu-web.js" defer></script>
+		<?php
+	}
 );
