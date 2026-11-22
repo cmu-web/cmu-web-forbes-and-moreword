@@ -2,9 +2,12 @@
   "name": "cmu-web-forbes-and-moreword",
   "private": true,
   "scripts": {
+    "kilt": "node scripts/kilt.cjs",
+    "check:kilt": "node scripts/kilt.cjs --check",
     "test:browser": "node tests/browser.cjs"
   },
   "devDependencies": {
+    "@cmu-web/kilt": "0.8.24",
     "playwright": "1.65.1"
   }
 }

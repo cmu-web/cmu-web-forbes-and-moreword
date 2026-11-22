@@ -21,8 +21,8 @@ jobs:
       - run: bash -n docs/seed.sh dev/run.sh
       - name: Check the pinned Web Kilt release
         run: |
-          version=$(sed -n "s/^const FAM_KIT *= *'\([^']*\)';/\1/p" forbes-and-moreword/functions.php)
-          curl --fail --silent --show-error --retry 3 "https://raw.githubusercontent.com/cmu-web/cmu-web-kilt/$version/package.json" | node tests/check-kit.cjs
+          npm ci --ignore-scripts
+          npm run check:kilt
 
   wordpress:
     runs-on: ubuntu-latest

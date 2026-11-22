@@ -12,11 +12,11 @@ defined( 'ABSPATH' ) || exit;
 
 // The Web Kilt release the theme is tested with, and its files' hashes
 // (subresource integrity), from the kit's package.json for that release.
-const FAM_KIT       = '0.8.9';
+const FAM_KIT       = '0.8.24';
 const FAM_KIT_FILES = array(
-	'css/cmu-cms.css' => 'sha384-zV4Oiwe8ikYWEc5ApP5p49KYu9glzcYVwoCr90Jw3csuQOQt9U/RRarEyL/ZvGgd',
-	'css/cmu-app.css' => 'sha384-0k+Fq/HOfWMJfjLdEWk0w9Y9wf2SN+TAxLSCc5FtIYooZOQZOpAnhfe0fHre8ZCf',
-	'js/cmu-app.js'   => 'sha384-OUj0Xw1O/00sPRbiU9tY0EIto5q/A7Nn7ZxhbEwk2B/5lcnAbLldNxyL52FO+MSK',
+	'css/cmu-cms.css' => 'sha384-O0A39LNQhbXUxLT3ugOen7BMtQMMC7XPQmTZkh07horV2sDED9b353B+3C/Bkfka',
+	'css/cmu-app.css' => 'sha384-dnXGzcz4qDkJAdXoxpQ3JIcsQALV7a49EhCv7LUGtFR5Ss4jbecJHQn9RlYdJjj5',
+	'js/cmu-app.js'   => 'sha384-L2SNQc24P1V/A2rSk/2jZ71qNGMVTAxP9ZwhyiEGU1HN9CGHNbPjorP68T0RF2tb',
 );
 const FAM_TEMPLATE  = 'https://www.cmu.edu/common/standard-v6';
 

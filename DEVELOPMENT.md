@@ -27,7 +27,10 @@ localhost, with a setting only `dev/compose.yml` turns on.
 
 The theme adds no CSS of its own. Its look comes from CMU's template and
 the kit, loaded in `functions.php`; the kit is pinned to one release with
-subresource integrity, so a changed file is refused. To make the template's
+subresource integrity, so a changed file is refused. The pin follows the
+installed `@cmu-web/kilt`: after a new release (Dependabot proposes each one),
+`npm run kilt` rewrites the version and hashes, and `npm run check:kilt`
+fails while they don't match. To make the template's
 styles and script work, `functions.php` also turns a few blocks into the
 template's markup:
 
