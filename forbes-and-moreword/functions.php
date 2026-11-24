@@ -793,12 +793,15 @@ function fam_nav_items( $blocks ) {
 			continue; // The site's name already links home
 		}
 		$classes = array_filter( explode( ' ', $a['className'] ?? '' ) );
+		// An external class goes on the link, where the template draws its leave-site icon
+		$external = in_array( 'external', $classes, true );
+		$classes  = array_values( array_diff( $classes, array( 'external' ) ) );
 		if ( fam_nav_is_current( $url, $id ) ) {
 			$classes[] = 'active';
 		}
 		$sub = 'core/navigation-submenu' === $name ? fam_nav_items( $block['innerBlocks'] ?? array() ) : '';
 		$out .= '<li' . ( $classes ? ' class="' . esc_attr( implode( ' ', $classes ) ) . '"' : '' ) . '>'
-			. '<a href="' . esc_url( $url ) . '"' . ( in_array( 'active', $classes, true ) ? ' aria-current="page"' : '' ) . '>' . $label . '</a>'
+			. '<a' . ( $external ? ' class="external"' : '' ) . ' href="' . esc_url( $url ) . '"' . ( in_array( 'active', $classes, true ) ? ' aria-current="page"' : '' ) . '>' . $label . '</a>'
 			. ( '' !== $sub ? '<ul>' . $sub . '</ul>' : '' ) . '</li>';
 	}
 	return $out;
