@@ -113,6 +113,8 @@ menu=""
 for tab in "install:Install" "patterns:Patterns" "news:News" "about:About"; do
   menu+="<!-- wp:navigation-link {\"label\":\"${tab#*:}\",\"url\":\"${url%/}/${tab%%:*}/\",\"kind\":\"custom\"} /-->"
 done
+# Last, menu-only: the project on GitHub
+menu+="<!-- wp:navigation-link {\"label\":\"Forbes \u0026 Moreword on GitHub\",\"url\":\"https://github.com/cmu-web/cmu-web-forbes-and-moreword\",\"kind\":\"custom\",\"className\":\"secondary external\"} /-->"
 wp post create --post_type=wp_navigation --post_status=publish --post_title="Main Menu" \
   --post_content="$menu" --porcelain >/dev/null
 # The site's own templates, such as its 404 page, in place of the theme's
