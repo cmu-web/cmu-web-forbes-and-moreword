@@ -15,7 +15,7 @@ Andrew Carnegie, Margaret Morrison and Andrew Mellon and a placeholder logo,
 you need Docker:
 
 ```sh
-dev/run.sh up       # http://127.0.0.1:3800/
+dev/run.sh up       # http://127.0.0.1:4200/
 dev/run.sh down
 ```
 

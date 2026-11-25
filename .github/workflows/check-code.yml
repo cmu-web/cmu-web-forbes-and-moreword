@@ -46,7 +46,7 @@ jobs:
           done
           docker compose -f dev/compose.yml exec -T wordpress test -f /var/www/html/wp-config.php
           docker compose -f dev/compose.yml run --rm -T cli wp core download --version="${{ matrix.wordpress }}" --force --skip-content
-          docker compose -f dev/compose.yml run --rm -T cli bash /docs/seed.sh http://127.0.0.1:3800
+          docker compose -f dev/compose.yml run --rm -T cli bash /docs/seed.sh http://127.0.0.1:4200
       - run: dev/run.sh check
       - run: npm ci
       - run: npx playwright install --with-deps chromium

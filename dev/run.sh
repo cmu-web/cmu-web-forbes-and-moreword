@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# A local copy of the docs site, at http://127.0.0.1:3800/.
+# A local copy of the docs site, at http://127.0.0.1:4200/.
 #   dev/run.sh up        start from an empty database and seed it, with the demo posts
 #   dev/run.sh editor    LOCAL ONLY: give fam-admin a demo password, for block
 #                        editor screenshots; the hosted site has no way in
@@ -18,12 +18,12 @@ case "${1:-}" in
     compose up -d --wait
     # The WordPress image copies its files into the volume on first start
     until compose exec -T wordpress test -f /var/www/html/wp-config.php; do sleep 1; done
-    compose run --rm -T cli bash /docs/seed.sh http://127.0.0.1:3800 --demo
-    echo "Forbes & Moreword on http://127.0.0.1:3800/"
+    compose run --rm -T cli bash /docs/seed.sh http://127.0.0.1:4200 --demo
+    echo "Forbes & Moreword on http://127.0.0.1:4200/"
     ;;
   editor)
     wp user update fam-admin --user_pass=local-demo-only --skip-email --quiet
-    echo "LOCAL ONLY: sign in at http://127.0.0.1:3800/wp-login.php as fam-admin, password local-demo-only"
+    echo "LOCAL ONLY: sign in at http://127.0.0.1:4200/wp-login.php as fam-admin, password local-demo-only"
     ;;
   check) wp eval-file /tests/integration.php ;;
   browser)

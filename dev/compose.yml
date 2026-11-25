@@ -1,4 +1,4 @@
-# A local copy of the docs site, built by docs/seed.sh, at http://127.0.0.1:3800/.
+# A local copy of the docs site, built by docs/seed.sh, at http://127.0.0.1:4200/.
 # Use dev/run.sh, not this file directly. The database lives in memory, so
 # every "up" starts from an empty one, as the hosted site does.
 name: forbes-and-moreword
@@ -21,7 +21,7 @@ services:
     image: wordpress@sha256:b427cec767f5de2aa649390cb8805aa1fe320e1e0d57fc1f467754edb6cc0a49
     depends_on:
       db: { condition: service_healthy }
-    ports: ["127.0.0.1:3800:80"]
+    ports: ["127.0.0.1:4200:80"]
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: wordpress

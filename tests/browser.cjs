@@ -4,7 +4,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const { chromium } = require('playwright');
 
-const base = process.env.FAM_TEST_URL || 'http://127.0.0.1:3800';
+const base = process.env.FAM_TEST_URL || 'http://127.0.0.1:4200';
 assert.ok(['127.0.0.1', 'localhost'].includes(new URL(base).hostname), 'Use the local test site');
 // Screenshots go to test-results/, or FAM_TEST_RESULTS when it's set
 const directory = process.env.FAM_TEST_RESULTS || path.join(__dirname, '../test-results');
