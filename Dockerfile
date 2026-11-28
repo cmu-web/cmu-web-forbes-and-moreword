@@ -12,9 +12,9 @@
 # wordpress:7.0-php8.3-apache (WordPress 7.0, PHP 8.3), the same image as
 # dev/compose.yml. Apache with mod_php serves the pages and the files in one
 # process, so the host only proxies to it.
-FROM docker.io/library/wordpress@sha256:b427cec767f5de2aa649390cb8805aa1fe320e1e0d57fc1f467754edb6cc0a49 AS wordpress
+FROM docker.io/library/wordpress@sha256:9b46af6a41fd0dcb2e5cf85033a6350d05010356847ede1cfcac5cf94292eb26 AS wordpress
 # wordpress:cli-2.12.0-php8.3, only for its WP-CLI
-FROM docker.io/library/wordpress@sha256:e4980e3ef763ce7535049c05a54e906d95b16370f28ca02fa329a079eebf3f65 AS cli
+FROM docker.io/library/wordpress@sha256:9b46af6a41fd0dcb2e5cf85033a6350d05010356847ede1cfcac5cf94292eb26 AS cli
 
 # WordPress, the theme and the content, seeded into SQLite. The seed imports
 # PlaceMellon photos, so this stage needs the network.
