@@ -7,7 +7,7 @@
     "test:browser": "node tests/browser.cjs"
   },
   "devDependencies": {
-    "@cmu-web/kilt": "0.8.24",
+    "@cmu-web/kilt": "0.8.30",
     "playwright": "1.65.1"
   }
 }
